@@ -25,24 +25,23 @@ def saveMoveInfoToFile(movieId, movieName, lastId):
     for item in params:
         url = url + item + "=" + params[item] + "&"
     url = url + "types=time"
-    try:
-        responseTxt = getMoveinfo(url) # key function
-        returnLastId = parseData(movieId, movieName, responseTxt) # 这一步报错，跑到exception块执行，输出"exception occured!"
-        print(returnLastId)
-        if returnLastId == "-1":
-            print("===============")
-            print(movieName)
-            print(url)
-            print("===============")
-            time.sleep(1)
-            print("isEnd")
-        else: 
-            time.sleep(0.5)
-            saveMoveInfoToFile(movieId, movieName, returnLastId)
-    except Exception as e:
-        print("exception occured!" )
-        # time.sleep(0.5)
-        # saveMoveInfoToFile(movieId, movieName, lastId)
+    responseTxt = getMoveinfo(url) # key function
+    returnLastId = parseData(movieId, movieName, responseTxt) # 这一步报错，跑到exception块执行，输出"exception occured!"
+    print(returnLastId)
+    if returnLastId == "-1":
+        print("===============")
+        print(movieName)
+        print(url)
+        print("===============")
+        time.sleep(1)
+        print("isEnd")
+    else: 
+        time.sleep(0.5)
+        saveMoveInfoToFile(movieId, movieName, returnLastId)    
+    # except Exception as e:
+    #     print("exception occured!" )
+    #     time.sleep(0.5)
+    #     saveMoveInfoToFile(movieId, movieName, lastId)
 
 # 解析数据，无其他作用    
 def parseData(movieId, movieName, htmlContent):
@@ -53,6 +52,8 @@ def parseData(movieId, movieName, htmlContent):
         print("爬完了%s的评论", movieName)
         return lastId
     for item in data:
+        if "content" not in item.keys():
+            continue
         print("进入循环")
         # print(item)
         # originalData = json.dumps(item)
@@ -102,6 +103,7 @@ if __name__ == '__main__':
     print("开始")
     movies = {
         "1662861200":u"第24期 巅峰之夜BBKing荣耀诞生 神反转结局震惊全场",
+        "1662856300":u"第23期 邱晨走心讲述抗癌经历 黄执中化身暗黑辩手解读宿命",
         "1629260900":u"第22期 马薇薇飙泪“致离别”",
         "1629256800":u"第21期 周冬雨爆料马思纯家很有钱 陈铭1v1开杠首次落败",
         "1596058300":u"第20期 高晓松年轻时像吴亦凡？马薇薇黄执中开杠抱头痛哭",
